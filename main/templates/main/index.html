@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        USV Controll
+    </title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'main/pure_css.css' %}">
+    <link rel="stylesheet" href="{% static 'main/normalize.css' %}">
+
+    <script src="{% static 'main/p5.js' %}"></script>
+    <script src="{% static 'main/sketch.js' %}"></script>
+
+
+</head>
+
+<body>
+    <div class="pure-g" style="padding-top: 25px;padding-left: 25px;padding-right: 25px;">
+        <div class="pure-u-1-4" id='can' name='can'></div>
+        <div class="pure-u-5-8" style='display: flex;
+        justify-content: center;'>
+            <iframe style='position: relative; height: 100%; width: 90%;' src="https://www.youtube.com/embed/5fEeS9uZb_I" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+        </div>
+        <div class="pure-u-3-24">
+            <table class='pure-table pure-table-horizontal' style="margin-left: 15px;">
+                <thead>
+                    <tr>
+                        <td>
+                            Sensor
+                        </td>
+                        <td>
+                            Value
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            PH:
+                        </td>
+                        <td id='ph'>
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Turbility:
+                        </td>
+                        <td id='turbility'>
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Temperature:
+                        </td>
+                        <td id='temperature'>
+                            0
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>
