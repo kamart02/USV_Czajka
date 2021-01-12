@@ -25,8 +25,8 @@ const text_width = 0.2;
 
 function setup() {
   let div = select('#can');
-  console.log(div);
-  console.log(div.size());
+  //console.log(div);
+  //console.log(div.size());
   width=div.size().width;
 
   let canvas = createCanvas(width, height);
@@ -34,7 +34,7 @@ function setup() {
   smooth();
   rectMode(CORNER);
 
-  console.log(div);
+  //console.log(div);
 
   last_check = millis();
 }
@@ -178,8 +178,8 @@ function logKey(e) {
 
 function windowResized(){
   let div = select('#can');
-  console.log(div);
-  console.log(div.size());
+  //console.log(div);
+  //console.log(div.size());
   width=div.size().width;
   resizeCanvas(width, height);
 }

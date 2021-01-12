@@ -10,4 +10,4 @@ class SpeedSerializer(serializers.HyperlinkedModelSerializer):
 class DataSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Data
-        fields = ('ph', 'turbility','temperature')
+        fields = ('ph', 'turbility','temperature', 'longitude', 'latitude', 'time')

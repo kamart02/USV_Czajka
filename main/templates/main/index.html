@@ -7,12 +7,16 @@
     </title>
 
     {% load static %}
-    <link rel="stylesheet" href="{% static 'main/pure_css.css' %}">
-    <link rel="stylesheet" href="{% static 'main/normalize.css' %}">
+    {% csrf_token %}
+    <link rel="stylesheet" href="{% static 'main/libraries/pure_css.css' %}">
+    <link rel="stylesheet" href="{% static 'main/libraries/normalize.css' %}">
+    <link rel="stylesheet" href="{% static 'main/libraries/leaflet.css' %}">
 
-    <script src="{% static 'main/p5.js' %}"></script>
+    <script src="{% static 'main/libraries/p5.js' %}"></script>
     <script src="{% static 'main/sketch.js' %}"></script>
-
+    <script src="{% static 'main/libraries/leaflet.js' %}"></script>
+    <script src="{% static 'main/libraries/jquerry.js' %}"></script>
+    <script src="{% static 'main/api.js' %}"></script>
 
 </head>
 
@@ -21,7 +25,10 @@
         <div class="pure-u-1-4" id='can' name='can'></div>
         <div class="pure-u-5-8" style='display: flex;
         justify-content: center;'>
-            <iframe style='position: relative; height: 100%; width: 90%;' src="https://www.youtube.com/embed/5fEeS9uZb_I" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <iframe style='position: relative; height: 50%; width: 90%;' src="https://www.youtube.com/embed/5fEeS9uZb_I"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
 
         </div>
         <div class="pure-u-3-24">
@@ -61,8 +68,42 @@
                             0
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            Longitude:
+                        </td>
+                        <td id='longitude'>
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Latitude:
+                        </td>
+                        <td id='latitude'>
+                            0
+                        </td>
+                    </tr>
                 </tbody>
             </table>
+        </div>
+    </div>
+    <div class='pure-g'>
+        <div class='pure-u-1-1'>
+            <div id="mapid" style="height: 600px;"></div>
+            <script>
+                let mymap = L.map('mapid').setView([54.538, 17.736], 13);
+                L.tileLayer("{% static 'main/UMP-pcPL' %}/{z}/{x}/{y}.jpg", {
+                    //attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                    maxZoom: 19,
+                    minZoom: 0,
+                    id: 'mapbox/streets-v11',
+                    tileSize: 512,
+                    zoomOffset: -1,
+                }).addTo(mymap);
+            </script>
+            <script src="{% static 'main/map.js' %}"></script>
+
         </div>
     </div>
 </body>
