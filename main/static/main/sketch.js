@@ -34,19 +34,22 @@ function setup() {
   smooth();
   rectMode(CORNER);
 
-  //console.log(div);
+  sendSpeedData(0,0);
+
+  let temp = getSpeedData();
+  L_speed=temp.leftSpeed;
+  R_speed=temp.rightSpeed;
 
   last_check = millis();
 }
 
 function draw() {
-  // if(millis()-last_check>=1000){
-  //   httpGet('/event/speed','text',false, function(r){
-  //     const data = r.split(';')
-  //     L_speed=parseInt(data[0],10);
-  //     R_speed=parseInt(data[1],10);
-  //   });
-  // }
+  if(millis()-last_check>=1000){
+    temp = getSpeedData();
+    L_speed=temp.leftSpeed;
+    R_speed=temp.rightSpeed;
+    last_check = millis();
+  }
 
   clear();
 
@@ -174,6 +177,9 @@ function logKey(e) {
     R_speed=0;
     L_speed=0;
   }
+
+  sendSpeedData(L_speed,R_speed);
+
 }
 
 function windowResized(){

@@ -4,13 +4,11 @@ let temp;
 
 const getSpeedData =  () => {
     let ret
-    ret = $.getJSON('api/speed/speed/1/', function(data, status){
-        temp = data;
-    });
-
-    return temp;
-    //console.log(ret);
-    //return ret;
+    ret = $.ajax('api/speed/speed/1/', {
+        type: 'GET',
+        async: false,
+    })
+    return ret.responseJSON;
 }
 
 const sendSpeedData = (lSpeed, rSpeed) => {
@@ -25,13 +23,17 @@ const sendSpeedData = (lSpeed, rSpeed) => {
 }
 
 const getLastData = () => {
-    $.getJSON('api/data/data/', function(data, status){
-        return data[-1];
-    });
+    let ret;
+    ret = $.ajax('api/data/data/', {
+        async: false,
+        type: 'GET',
+    }).responseJSON;
+    return ret[ret.length-1];
 }
 
 const getAllData = () => {
-    $.getJSON('api/data/data/', function(data, status){
-        return data;
-    });
+    return $.ajax('api/data/data/', {
+        async: false,
+        type: 'GET',
+    }).responseJSON;
 }
