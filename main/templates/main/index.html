@@ -18,6 +18,7 @@
     <script src="{% static 'main/libraries/jquerry.js' %}"></script>
     <script src="{% static 'main/api.js' %}"></script>
     <script src="{% static 'main/table_updates.js' %}"></script>
+    <script src="{% static 'main/main.js' %}"></script>
 
 </head>
 
@@ -26,10 +27,10 @@
         <div class="pure-u-1-4" id='can' name='can'></div>
         <div class="pure-u-5-8" style='display: flex;
         justify-content: center;'>
-            <iframe style='position: relative; height: 50%; width: 90%;' src="https://www.youtube.com/embed/5fEeS9uZb_I"
+            <!-- <iframe style='position: relative; height: 50%; width: 90%;' src="https://www.youtube.com/embed/5fEeS9uZb_I"
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen></iframe>
+                allowfullscreen></iframe> -->
 
         </div>
         <div class="pure-u-3-24">
@@ -69,15 +70,9 @@
                             0
                         </td>
                     </tr>
-                    <tr><td> </td>
-                        <td> </td></tr>
                     <tr>
-                        <td>
-                            Longitude:
-                        </td>
-                        <td id='longitude'>
-                            0
-                        </td>
+                        <td> </td>
+                        <td> </td>
                     </tr>
                     <tr>
                         <td>
@@ -87,12 +82,31 @@
                             0
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            Longitude:
+                        </td>
+                        <td id='longitude'>
+                            0
+                        </td>
+                    </tr>
+
                 </tbody>
             </table>
         </div>
     </div>
     <div class='pure-g'>
         <div class='pure-u-1-1'>
+            <form>
+            <label for="checkbox-radio-option-one" class="pure-checkbox">
+                <input type="checkbox" id="checkbox-radio-option-one" value="1" d/> Center on GPS</label>
+            </form>
+            <form>
+            <label for="waypoints" class="pure-checkbox">
+                <input type="checkbox" id="waypoints" value="1" d/> Waypoints</label>
+            </form>
+            <button class="pure-button pure-button-primary" id='send'>Send waypoints</button>
+            <button class="pure-button" id='abort'>Abort</button>
             <div id="mapid" style="height: 600px;"></div>
             <script>
                 let mymap = L.map('mapid').setView([54.538, 17.736], 13);

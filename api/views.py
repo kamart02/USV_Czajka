@@ -13,3 +13,15 @@ class SpeedControllViewSet(viewsets.ModelViewSet):
 class DataViewSet(viewsets.ModelViewSet):
     queryset = models.Data.objects.all().order_by('time')
     serializer_class = serializers.DataSerializer
+
+class MapDataViewSet(viewsets.ModelViewSet):
+    queryset = models.MapData.objects.all().order_by('time')
+    serializer_class = serializers.MapDataSerializer
+
+class WaypointViewSet(viewsets.ModelViewSet):
+    queryset = models.Waypoint.objects.all().order_by('id')
+    serializer_class = serializers.WaypointSerializer
+
+class AbortViewSet(viewsets.ModelViewSet):
+    queryset = models.Abort.objects.all().order_by('id')
+    serializer_class = serializers.AbortSerializer

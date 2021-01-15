@@ -18,13 +18,25 @@ from rest_framework import routers
 from . import views
 
 router1 = routers.DefaultRouter()
-router1.register(r'speed', views.SpeedControllViewSet)
+router1.register(r'', views.SpeedControllViewSet)
 
 router2 = routers.DefaultRouter()
-router2.register(r'data', views.DataViewSet)
+router2.register(r'', views.DataViewSet)
+
+router3 = routers.DefaultRouter()
+router3.register(r'', views.MapDataViewSet)
+
+router4 = routers.DefaultRouter()
+router4.register(r'', views.WaypointViewSet)
+
+router5 = routers.DefaultRouter()
+router5.register(r'', views.AbortViewSet)
 
 urlpatterns = [
     path('speed/', include(router1.urls)),
     path('data/', include(router2.urls)),
+    path('mapdata/', include(router3.urls)),
+    path('waypoint/', include(router4.urls)),
+    path('abort/', include(router5.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
