@@ -5,7 +5,10 @@ URL = 'http://127.0.0.1:8000/api'
 
 def getOneWaypoint():
     req = requests.get('{}/waypoint/'.format(URL))
-    return req.json()[0]
+    if req.json():
+        return req.json()[0]
+    else:
+        return False
 
 def deleteFirstWaypoint():
     wp = getOneWaypoint()
@@ -63,3 +66,8 @@ def updateAbort(val):
         headers={'Content-Type':'application/json'},
     )
     
+
+#temporary
+
+def getShutdown():
+    return False
