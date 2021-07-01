@@ -1,37 +1,37 @@
-
-from webinterface.backend.main import sendData, sendMapData, updateEngine
-from requests.api import get
-import main
-import api
 import math
 from geopy import distance
 
 degreeThreshold = 10
 distanceThreashold = 2
 
+autoEngineSpeedStop = {
+    'leftSpeed': 0,
+    'rightSpeed': 0
+}
+
 autoEngineSpeedCW = {
-    'left': 10,
-    'right': -10
+    'leftSpeed': 10,
+    'rightSpeed': -10
 }
 
 autoEngineSpeedCCW = {
-    'left': -10,
-    'right': 10
+    'leftSpeed': -10,
+    'rightSpeed': 10
 }
 
 autoEngineSpeedDrive = {
-    'left': 30,
-    'right': 30
+    'leftSpeed': 30,
+    'rightSpeed': 30
 }
 
 autoEngineSpeedDriveCW = {
-    'left': 30,
-    'right': 20
+    'leftSpeed': 30,
+    'rightSpeed': 20
 }
 
 autoEngineSpeedDriveCCW = {
-    'left': 20,
-    'right': 30
+    'leftSpeed': 20,
+    'rightSpeed': 30
 }
 
 def calculateBearing(latOld, lngOld, latNew, lngNew):
@@ -67,52 +67,43 @@ def getDir(currentBearing, targetBearing):
 
 
 
-def start():
-    waypoint = 0
-    abort = False
-    while not abort:
-        waypoint = api.getOneWaypoint()
-        if waypoint == False:
-            break
-        while not abort:
-            main.sendData()
-            pos = main.getGPS()
-            currentBearing = main.getCompass()
-            targetBearing = calculateBearing(pos['longitude'], pos['latitude'],waypoint['longitude'], waypoint['latitude'])
-            if getDir(currentBearing, targetBearing)['dir']=='CW':
-                main.updateEngine(autoEngineSpeedCW)
-            else:
-                main.updateEngine(autoEngineSpeedCCW)
-            if getDir(currentBearing, targetBearing)['amount']<=degreeThreshold:
-                updateEngine({
-                    'left': 0,
-                    'right': 0
-                })
-                break
-            abort = api.getAbort()
-        while not abort:
-            main.sendData()
-            pos = main.getGPS()
-            currentBearing = main.getCompass()
-            targetBearing = calculateBearing(pos['longitude'], pos['latitude'],waypoint['longitude'], waypoint['latitude'])
+def start(waypoint, compassBearing, GPS):
+    
+    #print(waypoint['longitude'])
+    waypoint['longitude']=float(waypoint['longitude'])
+    waypoint['latitude']=float(waypoint['latitude'])
 
-            if distance.distance((pos['longitude'], pos['latitude']),(waypoint['longitude'], waypoint['latitude']).m)<distanceThreashold:
-                updateEngine({
-                    'left': 0,
-                    'right': 0
-                })
-                sendMapData()
-                break
+    pos = GPS
+    currentBearing = compassBearing
+    targetBearing = calculateBearing(pos['longitude'], pos['latitude'], waypoint['longitude'], waypoint['latitude'])
 
-            if getDir(currentBearing, targetBearing)['amount'] <= degreeThreshold:
-                main.updateEngine(autoEngineSpeedDrive)
-            else:
-                if getDir(currentBearing, targetBearing)['dir'] =='CW':
-                    main.updateEngine(autoEngineSpeedDriveCW)
-                else: 
-                    main.updateEngine(autoEngineSpeedCCW)
-            
-            abort = api.getAbort()
+    if getDir(currentBearing, targetBearing)['amount']<=degreeThreshold:
+        return autoEngineSpeedStop, True
+
+    if getDir(currentBearing, targetBearing)['dir']=='CW':
+        return autoEngineSpeedCW, False
+        #main.updateEngine(autoEngineSpeedCW)
+    else:
+        return autoEngineSpeedCCW, False
+        #main.updateEngine(autoEngineSpeedCCW)
+
+def move(waypoint, compassBearing, GPS):
+        waypoint['longitude']=float(waypoint['longitude'])
+        waypoint['latitude']=float(waypoint['latitude'])
+        pos = GPS
+        currentBearing = compassBearing
+        targetBearing = calculateBearing(pos['longitude'], pos['latitude'],waypoint['longitude'], waypoint['latitude'])
+
+        if distance.distance((pos['longitude'], pos['latitude']),(waypoint['longitude'], waypoint['latitude']))<distanceThreashold:
+            return autoEngineSpeedStop, True
+
+        if getDir(currentBearing, targetBearing)['amount'] <= degreeThreshold:
+            return autoEngineSpeedDrive, False
+        else:
+            if getDir(currentBearing, targetBearing)['dir'] =='CW':
+                return autoEngineSpeedDriveCW, False
+            else: 
+                return autoEngineSpeedDriveCCW, False
 
 
 

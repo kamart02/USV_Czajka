@@ -30,13 +30,13 @@ router4 = routers.DefaultRouter()
 router4.register(r'', views.WaypointViewSet)
 
 router5 = routers.DefaultRouter()
-router5.register(r'', views.AbortViewSet)
+router5.register(r'', views.StatusViewSet)
 
 urlpatterns = [
     path('speed/', include(router1.urls)),
     path('data/', include(router2.urls)),
     path('mapdata/', include(router3.urls)),
     path('waypoint/', include(router4.urls)),
-    path('abort/', include(router5.urls)),
+    path('status/', include(router5.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

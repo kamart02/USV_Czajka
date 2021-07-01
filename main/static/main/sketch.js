@@ -3,6 +3,8 @@
 let height = 700;
 let width = 400;
 
+let doDraw=false;
+
 //speed var
 let L_speed = 0;
 let R_speed = 0;
@@ -20,7 +22,7 @@ const rect_width = 0.4;
 const border = 0;
 const text_height = rect_height;
 const text_width = 0.2;
-
+const textMulti = 0.6;
 
 
 function setup() {
@@ -35,21 +37,24 @@ function setup() {
   rectMode(CORNER);
 
   sendSpeedData(0,0);
+  //getSpeedData();
+  let temp = speedVal;
+  L_speed=0;
+  R_speed=0;
 
-  let temp = getSpeedData();
-  L_speed=temp.leftSpeed;
-  R_speed=temp.rightSpeed;
-
-  last_check = millis();
+  last_check = Date.now();
+  noLoop();
 }
 
 function draw() {
-  if(millis()-last_check>=1000){
-    temp = getSpeedData();
-    L_speed=temp.leftSpeed;
-    R_speed=temp.rightSpeed;
-    last_check = millis();
-  }
+  // if(millis()-last_check>=1000){
+  //   getSpeedData();
+  //   temp = speedVal;
+  //   L_speed=temp.leftSpeed;
+  //   R_speed=temp.rightSpeed;
+  //   last_check = millis();
+  // }
+  console.log("123");
 
   clear();
 
@@ -110,7 +115,7 @@ function draw() {
   fill(0);
   strokeWeight(0);
   textAlign(CENTER, CENTER);
-  textSize(height * (text_height - 0.02));
+  textSize(height * (text_height - 0.02) * textMulti);
   //textFont("Big Caslon");
 
 
@@ -177,10 +182,14 @@ function logKey(e) {
     R_speed=0;
     L_speed=0;
   }
-
+  
+  last_check = Date.now();
   sendSpeedData(L_speed,R_speed);
+  redraw();
 
 }
+
+
 
 function windowResized(){
   let div = select('#can');
@@ -188,6 +197,7 @@ function windowResized(){
   //console.log(div.size());
   width=div.size().width;
   resizeCanvas(width, height);
+  redraw();
 }
 
 

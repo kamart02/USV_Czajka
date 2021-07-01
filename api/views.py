@@ -22,6 +22,6 @@ class WaypointViewSet(viewsets.ModelViewSet):
     queryset = models.Waypoint.objects.all().order_by('id')
     serializer_class = serializers.WaypointSerializer
 
-class AbortViewSet(viewsets.ModelViewSet):
-    queryset = models.Abort.objects.all().order_by('id')
-    serializer_class = serializers.AbortSerializer
+class StatusViewSet(viewsets.ModelViewSet):
+    queryset = models.Status.objects.all().order_by('id')
+    serializer_class = serializers.StatusSerializer

@@ -9,8 +9,37 @@ let circle = L.circleMarker(latlng, {
 let isProgramMoving=false;
 let markerArray = [];
 
-const updateGpsPointer = () => {
-    let tableD = getLastData();
+let goldIcon = new L.Icon({
+    iconUrl: '/static/main/img/marker-icon-gold.png',
+    shadowUrl: '',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
+
+let greenIcon = new L.Icon({
+    iconUrl: '/static/main/img/marker-icon-green.png',
+    shadowUrl: '',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
+
+const updateGpsPointer = (result) => {
+    let tableD = {
+        latitude: 0,
+        longitude: 0
+    };
+    //console.log(0);
+    if(result.length==0){
+        tableD.latitude = 0;
+        tableD.longitude = 0;
+    }
+    else{
+        tableD = result[result.length-1]
+    }
     let latlng = L.latLng(tableD.latitude, tableD.longitude);
     if($('#checkbox-radio-option-one').is(":checked")){
         isProgramMoving=true;
@@ -26,8 +55,8 @@ const addMarker = (latlng) => {
 
 let lastMarkerID
 
-const loadAllMapMarkers = () => {
-    let tableD = getAllMapData();
+const loadAllMapMarkers = (results) => {
+    let tableD = results;
     //console.log(tableD);
     tableD.forEach(element => {
         //console.log(element);
@@ -97,11 +126,31 @@ const loadAllMapMarkers = () => {
 
 
 
-const loadNewMapMarkers = () => {
-    let tableD = getLastMapData();
+const loadNewMapMarkers = (results) => {
+    let tableD;
+    if(results.length==0){
+        tableD =  {
+            'ph': 0,
+            'temperature': 0,
+            'turbility':0,
+            'longitude': 0,
+            'latitude': 0,
+            'id':-1,
+        }
+    }
+    else{
+        tableD = results[results.length-1]
+    }
+    if(waypoints.length!=0){
+        if(waypoints[0].getLatLng().lat==tableD.latitude && waypoints[0].getLatLong().lng==tableD.longitude){
+            mymap.removeLayer(waypoints[0]);
+            waypoints.shift();
+        }
+    }
+    
     //console.log(tableD.id)
     //console.log(lastMarkerID);
-    if(tableD.id!=lastMarkerID){
+    if(tableD.id!=lastMarkerID && results.length!=0){
         markerArray.push(L.marker(L.latLng(tableD.latitude, tableD.longitude)).addTo(mymap).bindPopup(`
         <table class='pure-table pure-table-horizontal'>
         <thead>
@@ -177,6 +226,6 @@ let waypoints = [];
 
 mymap.on('click', (e) => {
     if($('#waypoints').is(':checked')){
-        waypoints.push(L.marker(e.latlng, {draggable: true}).addTo(mymap));
+        waypoints.push(L.marker(e.latlng, {draggable: true, icon: goldIcon}).addTo(mymap));
     }
 });

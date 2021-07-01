@@ -10,7 +10,7 @@ class SpeedSerializer(serializers.HyperlinkedModelSerializer):
 class DataSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Data
-        fields = ('ph', 'turbility','temperature', 'latitude', 'longitude', 'time', 'id')
+        fields = ('ph', 'turbility','temperature', 'latitude', 'longitude','voltage', 'time', 'id')
 
 class MapDataSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -22,7 +22,7 @@ class WaypointSerializer(serializers.HyperlinkedModelSerializer):
         model = models.Waypoint
         fields = ('latitude', 'longitude','id')
 
-class AbortSerializer(serializers.HyperlinkedModelSerializer):
+class StatusSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = models.Abort
-        fields = ('abort', 'time', 'id')
+        model = models.Status
+        fields = ('abort', 'automation', 'delMapData', 'delData', 'time', 'id')
