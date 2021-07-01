@@ -16,7 +16,7 @@ let speedVal={
 
 const getSpeedData =  (callback) => {
     let ret
-    ret = $.ajax('api/speed/', {
+    ret = $.ajax('api/speedN/', {
         type: 'GET',
         async: true,
         success: callback,
@@ -28,20 +28,14 @@ const sendSpeedData =  (lSpeed, rSpeed) => {
     let ret
     let lll=lSpeed;
     let rrr=rSpeed;
-    ret = $.ajax('api/speed/', {
-        type: 'GET',
-        async: true,
-        success: (results) =>{
-            $.ajax(`api/speed/${results[results.length-1]['id']}/`,{
-                type: 'PUT',
-                headers: { "X-CSRFToken": csrftoken },
-                data:{  
-                    rightSpeed: rrr,
-                    leftSpeed: lll
-                }
-            });
+    ret = $.ajax('api/speed/',{
+        type: 'PUT',
+        headers: { "X-CSRFToken": csrftoken },
+        data:{  
+            rightSpeed: rrr,
+            leftSpeed: lll
         }
-    })
+    });
     
 }
 

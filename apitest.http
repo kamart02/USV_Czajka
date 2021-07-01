@@ -1,0 +1,7 @@
+get http://127.0.0.1:8000/api/speedN/ HTTP/1.1
+# Content-Type: application/json
+
+# {
+#     "rightSpeed": 10,
+#     "leftSpeed": 0
+# }

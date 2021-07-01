@@ -33,6 +33,7 @@ router5 = routers.DefaultRouter()
 router5.register(r'', views.StatusViewSet)
 
 urlpatterns = [
+    path('speedN/', views.SpeedGet),
     path('speed/', include(router1.urls)),
     path('data/', include(router2.urls)),
     path('mapdata/', include(router3.urls)),
