@@ -104,7 +104,7 @@ def updateData(data):
                 'temperature':data['temperature'],
                 'latitude':data['latitude'],
                 'longitude':data['longitude'],
-                'voltageBatt':data['voltageBatt']
+                'voltage':data['voltageBatt']
 
             }),
         headers={'Content-Type':'application/json'},)
