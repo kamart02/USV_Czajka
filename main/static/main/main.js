@@ -69,8 +69,8 @@ $(document).ready(() =>{
     //setInterval(()=>{getLastData(updateGpsPointer)}, UPDATETIME);
     setInterval(()=>{getSpeedData((results)=>{
         if(getMiliseconds()-last_check>=1000){
-            L_speed=results.leftSpeed[results.length-1];
-            R_speed=results.rightSpeed[results.length-1];
+            L_speed=results[results.length-1].leftSpeed;
+            R_speed=results[results.length-1].rightSpeed;
         }
         //redraw();
     })},UPDATETIME);
