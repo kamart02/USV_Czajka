@@ -9,7 +9,7 @@ function addGraphData(chart, data) {
         if(chart.data.labels.length!=0){
             temp='-';
         }
-        chart.data.labels.unshift(temp + chart.data.labels.length + 's');
+        chart.data.labels.unshift(temp + chart.data.labels.length * 5 + 's');
     }
     
     chart.data.datasets.forEach((dataset) => {

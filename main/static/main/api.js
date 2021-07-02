@@ -28,7 +28,7 @@ const sendSpeedData =  (lSpeed, rSpeed) => {
     let ret
     let lll=lSpeed;
     let rrr=rSpeed;
-    ret = $.ajax('api/speed/',{
+    ret = $.ajax('api/speedN/',{
         type: 'PUT',
         headers: { "X-CSRFToken": csrftoken },
         data:{  
@@ -41,7 +41,7 @@ const sendSpeedData =  (lSpeed, rSpeed) => {
 
 const getLastData = (callback) => {
     let ret;
-    ret = $.ajax('api/data/', {
+    ret = $.ajax('api/dataN/', {
         async: true,
         type: 'GET',
         success: callback,
@@ -122,3 +122,10 @@ const sendStatus = (value) => {
         }
         )
     };
+
+const rmAll = () => {
+    $.ajax('api/rmAll/',{
+        type: 'DELETE',
+        dataType: 'JSON'
+    })
+}

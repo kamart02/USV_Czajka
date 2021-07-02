@@ -54,7 +54,7 @@ function draw() {
   //   R_speed=temp.rightSpeed;
   //   last_check = millis();
   // }
-  console.log("123");
+  //console.log("123");
 
   clear();
 

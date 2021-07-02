@@ -1,7 +1,75 @@
 get http://127.0.0.1:8000/api/speedN/ HTTP/1.1
-# Content-Type: application/json
+###
 
-# {
-#     "rightSpeed": 10,
-#     "leftSpeed": 0
-# }
+put http://127.0.0.1:8000/api/speedN/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "rightSpeed": 0,
+  "leftSpeed": 0
+}
+
+###
+
+get http://127.0.0.1:8000/api/dataN/ HTTP/1.1
+###
+post http://127.0.0.1:8000/api/dataN/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "ph": "6.98891",
+  "turbility": "-4347.24834",
+  "temperature": "27.87500",
+  "latitude": "0.000000000",
+  "longitude": "0.000000000",
+  "voltage": "0.000000000"
+}
+
+###
+delete http://127.0.0.1:8000/api/rmAll/ HTTP/1.1
+###
+get http://127.0.0.1:8000/api/mapdataN/ HTTP/1.1
+content-type: application/json
+
+{
+  "all": true
+}
+###
+post http://127.0.0.1:8000/api/mapdataN/ HTTP/1.1
+content-type: application/json
+
+{
+  "ph": "6.98891",
+  "turbility": "-4347.24834",
+  "temperature": "27.87500",
+  "latitude": "0.000000000",
+  "longitude": "0.000000000"
+}
+###
+
+delete http://127.0.0.1:8000/api/waypointN/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "all": true
+}
+### 
+
+get http://127.0.0.1:8000/api/waypointN/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "all": true
+}
+
+###
+
+post http://127.0.0.1:8000/api/waypointN/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "latitude": "0.000000000",
+  "longitude": "0.000000000"
+}
+
+###

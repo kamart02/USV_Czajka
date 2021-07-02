@@ -42,11 +42,7 @@ $(document).ready(() =>{
     $('#rmalldata').click(() =>{
         r = confirm("This action will delete all past data on the drone. (this cannot be undone)\nDo you want to continue?");
         if(r==true){
-            sendStatus({
-                'abort': false,
-                'delMapData': true,
-                'delData': true
-            })
+            rmAll();
             //window.location.reload(true);
         }
     })
@@ -69,12 +65,12 @@ $(document).ready(() =>{
     getAllMapData(loadAllMapMarkers);
 
     setInterval(()=>{getAllMapData(loadNewMapMarkers)}, 5000);
-    setInterval(()=>{getLastData(tableUpdate)}, UPDATETIME);
-    setInterval(()=>{getAllData(updateGpsPointer)}, UPDATETIME);
+    setInterval(()=>{getLastData((data) => {tableUpdate(data), updateGpsPointer(data)})}, UPDATETIME);
+    //setInterval(()=>{getLastData(updateGpsPointer)}, UPDATETIME);
     setInterval(()=>{getSpeedData((results)=>{
         if(getMiliseconds()-last_check>=1000){
-            L_speed=results.leftSpeed;
-            R_speed=results.rightSpeed;
+            L_speed=results.leftSpeed[results.length-1];
+            R_speed=results.rightSpeed[results.length-1];
         }
         //redraw();
     })},UPDATETIME);

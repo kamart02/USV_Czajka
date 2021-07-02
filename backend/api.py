@@ -1,6 +1,8 @@
 import requests
 import json
 
+from requests.api import head
+
 URL = 'http://192.168.33.6:8000/api'
 
 def removeData():
@@ -53,29 +55,39 @@ def deletAllWaypoints():
     req = requests.get('{}/waypoint/'.format(URL))
     if req.json():
         for element in req.json():
-            requests.delete('{}/waypoint/{}'.format(URL, element['id']))
+            requests.delete('{}/waypointN/'.format(URL),
+            data=json.dumps(
+                {
+                    'all': True
+                }
+            ),
+            headers={'Content-Type':'application/json'})
     else:
         return False
 
 
 def getOneWaypoint():
-    req = requests.get('{}/waypoint/'.format(URL))
+    req = requests.get('{}/waypointN/'.format(URL))
     if req.json():
-        return req.json()[0]
+        return req.json()
     else:
         return False
 
 def deleteFirstWaypoint():
     wp = getOneWaypoint()
-    requests.delete('{}/waypoint/{}/'.format(URL, wp['id']))
+    requests.delete('{}/waypoint/'.format(URL), 
+    data=json.dumps({
+        'all': False
+    }),
+    headers={'Content-Type':'application/json'})
 
 def getSpeed():
     req = requests.get('{}/speed/'.format(URL))
     return req.json()[-1]
 
 def updateSpeed(speed):
-    lastSpeed = getSpeed()
-    requests.put('{}/speed/{}/'.format(URL, lastSpeed['id']), 
+    #lastSpeed = getSpeed()
+    requests.put('{}/speedU/'.format(URL), 
         data=json.dumps(
             {
                 'rightSpeed': speed['right'],

@@ -36,8 +36,12 @@ urlpatterns = [
     path('speedN/', views.SpeedGet),
     path('speed/', include(router1.urls)),
     path('data/', include(router2.urls)),
+    path('dataN/', views.dataGet),
+    path('rmAll/', views.rmAll),
     path('mapdata/', include(router3.urls)),
+    path('mapdataN/', views.mapDataGet),
     path('waypoint/', include(router4.urls)),
+    path('waypointN/', views.waypointGet),
     path('status/', include(router5.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
