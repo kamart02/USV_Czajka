@@ -59,7 +59,7 @@ get http://127.0.0.1:8000/api/waypointN/ HTTP/1.1
 Content-Type: application/json
 
 {
-  "all": true
+  "all": false
 }
 
 ###
