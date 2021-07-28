@@ -28,6 +28,7 @@ const sendSpeedData =  (lSpeed, rSpeed) => {
     let ret
     let lll=lSpeed;
     let rrr=rSpeed;
+
     ret = $.ajax('api/speedN/',{
         type: 'PUT',
         headers: { "X-CSRFToken": csrftoken },

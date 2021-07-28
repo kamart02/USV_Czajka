@@ -9,7 +9,7 @@ let doDraw=false;
 let L_speed = 0;
 let R_speed = 0;
 
-const increment=20;
+const increment=4;
 
 let last_check;
 
@@ -93,7 +93,7 @@ function draw() {
       b = 83;
     }
 
-    if ((L_speed / 20 >= temp && i <= 5 && L_speed >= 0) || (-1 * (L_speed / 20) >= temp && i >= 5 && L_speed <= 0)) {
+    if ((L_speed / increment >= temp && i <= 5 && L_speed >= 0) || (-1 * (L_speed / increment) >= temp && i >= 5 && L_speed <= 0)) {
       fill(color(r, g, b));
       //console.log(temp);
     }
@@ -102,7 +102,7 @@ function draw() {
     }
     rect(border * width, border * height + i * rect_height * height + i * spaceing * height, rect_width * width, rect_height * height, rect_corner);
 
-    if ((R_speed / 20 >= temp && i <= 5 && R_speed >= 0) || (-1 * (R_speed / 20) >= temp && i >= 5 && R_speed <= 0)) {
+    if ((R_speed / increment >= temp && i <= 5 && R_speed >= 0) || (-1 * (R_speed / increment) >= temp && i >= 5 && R_speed <= 0)) {
       fill(color(r, g, b));
       //console.log(temp);
     }
@@ -138,11 +138,11 @@ const trans = (val, smin, smax, emin, emax) => {
 }
 
 const normalise = (val) =>{
-  if(val>100){
-    val=100;
+  if(val>increment*5){
+    val=increment*5;
   }
-  if(val<-100){
-    val=-100;
+  if(val<-increment*5){
+    val=-increment*5;
   }
   return val;
 }
