@@ -138,10 +138,13 @@ def getCompass():
         return D
 
 def sendEngineVal(leftSpeed, rightSpeed):
-    i2cbus.write_byte(ControlerAddr, 202)
-    i2cbus.write_byte(ControlerAddr,leftSpeed) # switch it on
-    i2cbus.write_byte(ControlerAddr, 203)
-    i2cbus.write_byte(ControlerAddr,rightSpeed) # switch it on
+    try:
+        i2cbus.write_byte(ControlerAddr, 202)
+        i2cbus.write_byte(ControlerAddr,leftSpeed) # switch it on
+        i2cbus.write_byte(ControlerAddr, 203)
+        i2cbus.write_byte(ControlerAddr,rightSpeed) # switch it on
+    except:
+        print("Error while sending data to the arduino")
 
 #updating engine speed and uploading it to database (needs changes)
 def updateEngine(speed):
@@ -220,16 +223,20 @@ def shutdown():
 
 #wip (missing voltage values)
 def readData():
-    ph = 0
-    turbility = 0
-    #analog 0 is ph and analog 1 is turbility
-    ph = AnalogIn(adc, ADS.P0).voltage
-    ph = ph*-16.903313 + 7 + PHOFFSET
-    turbility = AnalogIn(adc, ADS.P1).voltage
-    turbility = turbility * turbility * -1120.4 + turbility * 5742.3 - 4352.9
-    temperature = therm.get_temperature()
-    voltageBatt = AnalogIn(adc, ADS.P2).voltage
-    voltageBatt *= 10.0*4980.0/1023.0
+    try:
+        ph = 0
+        turbility = 0
+        #analog 0 is ph and analog 1 is turbility
+        ph = AnalogIn(adc, ADS.P0).voltage
+        ph = ph*-16.903313 + 7 + PHOFFSET
+        turbility = AnalogIn(adc, ADS.P1).voltage
+        turbility *= 13
+        turbility = turbility * turbility * -1120.4 + turbility * 5742.3 - 4352.9
+        temperature = therm.get_temperature()
+        voltageBatt = AnalogIn(adc, ADS.P2).voltage
+        voltageBatt *= 10.0*4980.0/1023.0
+    except:
+        print("Error while reading ADC data")
 
     return {
         'ph': ph,
@@ -260,8 +267,10 @@ def sendData():
         finalData['ph'] = round(adcData['ph'],5)
         finalData['temperature'] = round(adcData['temperature'],5)
         finalData['voltageBatt'] = round(adcData['voltageBatt'],5)
-
-        api.updateData(finalData)
+        try:
+            api.updateData(finalData)
+        except:
+            print("Error while sending data to API")
 
 def sendMapData():
     finalData = {
@@ -280,8 +289,10 @@ def sendMapData():
     finalData['turbility'] = round(adcData['turbility'],5)
     finalData['ph'] = round(adcData['ph'],5)
     finalData['temperature'] = round(adcData['temperature'],5)
-
-    api.updateMapData(finalData)
+    try:
+        api.updateMapData(finalData)
+    except:
+        print("Error while sending map data to API")
 
 #initialization of ThermSensor
 def initThermSenor():

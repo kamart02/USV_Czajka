@@ -9,7 +9,7 @@ let doDraw=false;
 let L_speed = 0;
 let R_speed = 0;
 
-const increment=4;
+const increment=8;
 
 let last_check;
 
