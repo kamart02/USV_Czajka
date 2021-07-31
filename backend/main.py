@@ -316,7 +316,7 @@ def initADC():
     global adc
     i2c = busio.I2C(board.SCL, board.SDA)
     adc = ADS.ADS1115(i2c)
-    adc.gain = 8
+    adc.gain = 2
 
 def initComp():
     global compass
