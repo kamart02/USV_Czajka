@@ -48,6 +48,35 @@ import gpiozero
 import board
 import busio
 
+#threading fo engine updates
+from threading import Timer
+
+class RepeatedTimer(object):
+    def __init__(self, interval, function, *args, **kwargs):
+        self._timer     = None
+        self.interval   = interval
+        self.function   = function
+        self.args       = args
+        self.kwargs     = kwargs
+        self.is_running = False
+        self.start()
+
+    def _run(self):
+        self.is_running = False
+        self.start()
+        self.function(*self.args, **self.kwargs)
+
+    def start(self):
+        if not self.is_running:
+            self._timer = Timer(self.interval, self._run)
+            self._timer.start()
+            self.is_running = True
+
+    def stop(self):
+        self._timer.cancel()
+        self.is_running = False
+
+
 
 #constants
 
@@ -349,35 +378,41 @@ def checkStatus():
             api.clearStatus()
 
 #wip
+# def initEngine():
+#     engineSpeed['left'] = 100
+#     engineSpeed['right'] = 100
+#     if engineSpeed['left']>=0:
+#         motorLeft.forward(mapVal(engineSpeed['left'],0,100,0.2,0.8))
+#     else:
+#         motorLeft.backward(mapVal(-1*engineSpeed['left'],0,100,0.2,0.8))
+
+#     if engineSpeed['right']>=0:
+#         motorRight.forward(mapVal(engineSpeed['right'],0,100,0.2,0.8))
+#     else:
+#         motorRight.backward(mapVal(-1*engineSpeed['right'],0,100,0.2,0.8))
+
+#     time.sleep(5)
+
+#     engineSpeed['left'] = 0
+#     engineSpeed['right'] = 0
+
+#     if engineSpeed['left']>=0:
+#         motorLeft.forward(mapVal(engineSpeed['left'],0,100,0.2,0.8))
+#     else:
+#         motorLeft.backward(mapVal(-1*engineSpeed['left'],0,100,0.2,0.8))
+
+#     if engineSpeed['right']>=0:
+#         motorRight.forward(mapVal(engineSpeed['right'],0,100,0.2,0.8))
+#     else:
+#         motorRight.backward(mapVal(-1*engineSpeed['right'],0,100,0.2,0.8))
+
+#     api.updateSpeed(engineSpeed)
+
+engineTask = 0
 def initEngine():
-    engineSpeed['left'] = 100
-    engineSpeed['right'] = 100
-    if engineSpeed['left']>=0:
-        motorLeft.forward(mapVal(engineSpeed['left'],0,100,0.2,0.8))
-    else:
-        motorLeft.backward(mapVal(-1*engineSpeed['left'],0,100,0.2,0.8))
+    global engineTask
+    engineTask = RepeatedTimer(0.5,updateEngine(api.getSpeed()))
 
-    if engineSpeed['right']>=0:
-        motorRight.forward(mapVal(engineSpeed['right'],0,100,0.2,0.8))
-    else:
-        motorRight.backward(mapVal(-1*engineSpeed['right'],0,100,0.2,0.8))
-
-    time.sleep(5)
-
-    engineSpeed['left'] = 0
-    engineSpeed['right'] = 0
-
-    if engineSpeed['left']>=0:
-        motorLeft.forward(mapVal(engineSpeed['left'],0,100,0.2,0.8))
-    else:
-        motorLeft.backward(mapVal(-1*engineSpeed['left'],0,100,0.2,0.8))
-
-    if engineSpeed['right']>=0:
-        motorRight.forward(mapVal(engineSpeed['right'],0,100,0.2,0.8))
-    else:
-        motorRight.backward(mapVal(-1*engineSpeed['right'],0,100,0.2,0.8))
-
-    api.updateSpeed(engineSpeed)
 
 #main loop function (automodeneed fix)
 def start():
@@ -390,8 +425,12 @@ def start():
             global lastEngineUpdate
             if(time.time()-lastEngineUpdate>=1):
                 lastEngineUpdate=time.time()
-                updateEngine(api.getSpeed())
+                global engineTask
+                engineTask.start()
+                #updateEngine(api.getSpeed())
         else:
+            global engineTask
+            engineTask.stop()
             if completedOneTrip:
                 currentWaypoint=api.getOneWaypoint()
                 completedOneTrip=False
