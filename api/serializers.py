@@ -26,3 +26,8 @@ class StatusSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Status
         fields = ('abort', 'automation', 'delMapData', 'delData', 'time', 'id')
+
+class PingSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = models.Ping
+        fields = ('checked', 'time')

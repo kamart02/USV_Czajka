@@ -31,3 +31,7 @@ class Status(models.Model):
     delMapData = models.BooleanField(default=False)
     delData = models.BooleanField(default=False)
     time = models.DateTimeField('time', auto_now=True)
+
+class Ping(models.Model):
+    checked = models.BooleanField(default=False)
+    time = models.DateTimeField('time', auto_now=True)

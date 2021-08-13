@@ -40,6 +40,16 @@ const sendSpeedData =  (lSpeed, rSpeed) => {
     
 }
 
+const sendPing = () => {
+    $.ajax('api/ping/',{
+        type: 'PUT',
+        headers: {"X-CSRFToken": csrftoken},
+        data: {
+            checked: false
+        }
+    });
+}
+
 const getLastData = (callback) => {
     let ret;
     ret = $.ajax('api/dataN/', {

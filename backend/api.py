@@ -5,6 +5,26 @@ from requests.api import head
 
 URL = 'http://192.168.33.6:8000/api'
 
+def getPing():
+    try:
+        req = requests.get('{}/ping/'.format(URL))
+        if req.json():
+            return req.json()
+        else:
+            return False
+    except:
+        print("Error while getting ping")
+
+def putPing():
+    try:
+        requests.post('{}/ping/'.format(URL),
+        data = json.dump({
+            'checked': True,
+        }),
+        headers={'Content-Type':'application/json'},)
+    except:
+        print("Error while putting ping")
+
 def removeData():
     try:
         req = requests.get('{}/data/'.format(URL))

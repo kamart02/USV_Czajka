@@ -9,6 +9,10 @@ function getMiliseconds(){
     return Date.now();
   }
 
+const ping = () => {
+    sendPing()
+}
+
 $(document).ready(() =>{
 
     mymap.invalidateSize();
@@ -63,7 +67,7 @@ $(document).ready(() =>{
     
 
     getAllMapData(loadAllMapMarkers);
-
+    setInterval(()=>{ping()},1000)
     setInterval(()=>{getAllMapData(loadNewMapMarkers)}, 5000);
     setInterval(()=>{getLastData((data) => {tableUpdate(data), updateGpsPointer(data)})}, UPDATETIME);
     //setInterval(()=>{getLastData(updateGpsPointer)}, UPDATETIME);

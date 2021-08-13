@@ -34,6 +34,10 @@ class StatusViewSet(viewsets.ModelViewSet):
     queryset = models.Status.objects.all().order_by('id')
     serializer_class = serializers.StatusSerializer
 
+class PingViewSet(viewsets.ModelViewSet):
+    queryset = models.Ping.objects.all().order_by('id')
+    serializer_class = serializers.PingSerializer
+
 @api_view(['GET','POST', 'PUT'])
 def SpeedGet(request):
     if request.method=="GET":
@@ -130,3 +134,19 @@ def waypointGet(request):
                 waypoint.delete()
             return Response(status=status.HTTP_200_OK)
 
+@api_view(['GET', 'PUT'])
+def pingGet(request):
+    if request.method == 'PUT':
+        if models.Ping.objects.exists():
+            ping = models.Ping.objects.last()
+        else:
+            ping = models.Ping(checked = True)
+        serializer = serializers.PingSerializer(ping, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    if request.method == 'GET':
+        ping = models.Ping.objects.first()
+        serializer = serializers.PingSerializer(ping)
+        return Response(serializer.data)

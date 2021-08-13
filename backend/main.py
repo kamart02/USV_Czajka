@@ -377,6 +377,20 @@ def checkStatus():
                 api.deletAllWaypoints()
             api.clearStatus()
 
+numOfBadChecks = 0
+
+def checkPing():
+    content = api.getPing()
+    if content['checked'] == False:
+        api.putPing()
+    else:
+        global numOfBadChecks
+        numOfBadChecks+=1
+        if numOfBadChecks > 5:
+            api.sendSpeedData(0,0)
+
+
+
 #wip
 # def initEngine():
 #     engineSpeed['left'] = 100
@@ -412,6 +426,7 @@ engineTask = 0
 def initEngine():
     global engineTask
     engineTask = RepeatedTimer(0.5,updateEngine(api.getSpeed()))
+    pingTask = RepeatedTimer(1, checkPing())
 
 
 #main loop function (automodeneed fix)

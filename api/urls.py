@@ -32,6 +32,9 @@ router4.register(r'', views.WaypointViewSet)
 router5 = routers.DefaultRouter()
 router5.register(r'', views.StatusViewSet)
 
+router6 = routers.DefaultRouter()
+router6.register(r'', views.PingViewSet)
+
 urlpatterns = [
     path('speedN/', views.SpeedGet),
     path('speed/', include(router1.urls)),
@@ -43,5 +46,7 @@ urlpatterns = [
     path('waypoint/', include(router4.urls)),
     path('waypointN/', views.waypointGet),
     path('status/', include(router5.urls)),
+    path('ping/', views.pingGet),
+    path('pingR/', include(router6.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
