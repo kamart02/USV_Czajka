@@ -382,6 +382,8 @@ numOfBadChecks = 0
 def checkPing():
     content = api.getPing()
     if content['checked'] == False:
+        global numOfBadChecks
+        numOfBadChecks = 0
         api.putPing()
     else:
         global numOfBadChecks
