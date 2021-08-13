@@ -167,6 +167,7 @@ def getCompass():
         return D
 
 def sendEngineVal(leftSpeed, rightSpeed):
+    print(rightSpeed, leftSpeed)
     try:
         i2cbus.write_byte(ControlerAddr, 202)
         i2cbus.write_byte(ControlerAddr,leftSpeed) # switch it on
