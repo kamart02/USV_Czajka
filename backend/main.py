@@ -261,7 +261,10 @@ def readData():
         turbility = AnalogIn(adc, ADS.P1).voltage
         turbility *= 13
         turbility = turbility * turbility * -1120.4 + turbility * 5742.3 - 4352.9
-        temperature = therm.get_temperature()
+        try:
+            temperature = therm.get_temperature()
+        except:
+            temperature = 0
         voltageBatt = AnalogIn(adc, ADS.P2).voltage
         voltageBatt *= 10.0*4980.0/1023.0
     except:
@@ -466,7 +469,10 @@ def start():
 api.initSpeed()
 initGPS()
 initADC()
-initThermSenor()
+try:
+    initThermSenor()
+except:
+    print("Error with therm")
 initComp()
 
 initEngine()
