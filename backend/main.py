@@ -51,30 +51,55 @@ import busio
 #threading fo engine updates
 from threading import Timer
 
-class RepeatedTimer(object):
-    def __init__(self, interval, function, *args, **kwargs):
-        self._timer     = None
-        self.interval   = interval
-        self.function   = function
-        self.args       = args
-        self.kwargs     = kwargs
-        self.is_running = False
-        self.start()
+# # class RepeatedTimer(object):
+#     def __init__(self, interval, function, *args, **kwargs):
+#         self._timer     = None
+#         self.interval   = interval
+#         self.function   = function
+#         self.args       = args
+#         self.kwargs     = kwargs
+#         self.is_running = False
+#         self.start()
 
-    def _run(self):
-        self.is_running = False
-        self.start()
-        self.function(*self.args, **self.kwargs)
+#     def _run(self):
+#         self.is_running = False
+#         self.start()
+#         self.function(*self.args, **self.kwargs)
 
-    def start(self):
-        if not self.is_running:
-            self._timer = Timer(self.interval, self._run)
-            self._timer.start()
-            self.is_running = True
+#     def start(self):
+#         if not self.is_running:
+#             self._timer = Timer(self.interval, self._run)
+#             self._timer.start()
+#             self.is_running = True
 
-    def stop(self):
-        self._timer.cancel()
-        self.is_running = False
+#     def stop(self):
+#         self._timer.cancel()
+#         self.is_running = False
+
+def setInterval(interval, times = -1):
+    # This will be the actual decorator,
+    # with fixed interval and times parameter
+    def outer_wrap(function):
+        # This will be the function to be
+        # called
+        def wrap(*args, **kwargs):
+            stop = threading.Event()
+
+            # This is another function to be executed
+            # in a different thread to simulate setInterval
+            def inner_wrap():
+                i = 0
+                while i != times and not stop.isSet():
+                    stop.wait(interval)
+                    function(*args, **kwargs)
+                    i += 1
+
+            t = threading.Timer(0, inner_wrap)
+            t.daemon = True
+            t.start()
+            return stop
+        return wrap
+    return outer_wrap
 
 
 
@@ -429,13 +454,15 @@ def checkPing():
 #     api.updateSpeed(engineSpeed)
 global engineTask
 engineTask = 0
+
+@setInterval()
 def initEngine():
     print("starting engineTASK")
     global engineTask
-    engineTask = RepeatedTimer(1,updateEngine, api.getSpeed)
+    updateEngine(api.getSpeed)
     print("starting ping")
-    #pingTask = RepeatedTimer(1, checkPing())
-    print("ending task")
+    checkPing()
+    print("ending task")    
 
 
 #main loop function (automodeneed fix)
@@ -478,8 +505,11 @@ except:
     print("Error with therm")
 initComp()
 
-initEngine()
+ThreadingTasks = initEngine()
 
-start()
+try:
+    start()
+except KeyboardInterrupt:
+    ThreadingTasks.set()
 
 
