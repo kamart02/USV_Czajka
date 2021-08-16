@@ -254,6 +254,7 @@ def shutdown():
 #wip (missing voltage values)
 def readData():
     try:
+        temperature = 0
         ph = 0
         turbility = 0
         #analog 0 is ph and analog 1 is turbility
@@ -384,13 +385,12 @@ def checkStatus():
 numOfBadChecks = 0
 
 def checkPing():
+    global numOfBadChecks
     content = api.getPing()
     if content['checked'] == False:
-        global numOfBadChecks
         numOfBadChecks = 0
         api.putPing()
     else:
-        global numOfBadChecks
         numOfBadChecks+=1
         if numOfBadChecks > 5:
             api.sendSpeedData(0,0)
@@ -427,12 +427,15 @@ def checkPing():
 #         motorRight.backward(mapVal(-1*engineSpeed['right'],0,100,0.2,0.8))
 
 #     api.updateSpeed(engineSpeed)
-
+global engineTask
 engineTask = 0
 def initEngine():
+    print("starting engineTASK")
     global engineTask
-    engineTask = RepeatedTimer(0.5,updateEngine(api.getSpeed()))
-    pingTask = RepeatedTimer(1, checkPing())
+    engineTask = RepeatedTimer(1,updateEngine, api.getSpeed)
+    print("starting ping")
+    #pingTask = RepeatedTimer(1, checkPing())
+    print("ending task")
 
 
 #main loop function (automodeneed fix)
@@ -447,10 +450,9 @@ def start():
             if(time.time()-lastEngineUpdate>=1):
                 lastEngineUpdate=time.time()
                 global engineTask
-                engineTask.start()
+                #engineTask.start()
                 #updateEngine(api.getSpeed())
         else:
-            global engineTask
             engineTask.stop()
             if completedOneTrip:
                 currentWaypoint=api.getOneWaypoint()

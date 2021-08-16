@@ -3,7 +3,7 @@ import json
 
 from requests.api import head
 
-URL = 'http://192.168.33.6:8000/api'
+URL = 'http://192.168.33.12:8000/api'
 
 def getPing():
     try:
